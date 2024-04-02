@@ -12,8 +12,13 @@
     animalquery = document.getElementById("animal").value;
 
     //TODO: Make ajax fetch request and call populateResults, or display error message
-    
-    alert("You pressed the button! Now you need to change the code to make an AJAX call");
+    try {
+      let response = await fetch("/api/animals?animal=" + animalquery)
+      let responseText = await response.text()
+      populateResults(responseText, animalquery)
+    } catch (error) {
+      document.getElementById("results").innerHTML = error;
+    }
   }
   
   /**
@@ -22,6 +27,7 @@
    * Note: The imageurls could use relative paths or absolute paths.
    */
   function populateResults(imageurls, animalquery) {
+    imageurls = JSON.parse(imageurls)
 
     //first make a header showing what the results are for
     let resultsHead = document.createElement("h2");
